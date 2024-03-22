@@ -2,11 +2,12 @@ import { StyleSheet } from 'react-native';
 
 import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
+import { Box, NativeBaseProvider } from 'native-base';
 
 export default function TabTwoScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab dois editada</Text>
+      <Text style={styles.title}>Tab dois editada - 1 + native base</Text>
       <View
         style={styles.separator}
         lightColor="#eee"
