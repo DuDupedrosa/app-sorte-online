@@ -1,11 +1,23 @@
+import ButtonComponent from '@/components/native/ButtonComponent';
 import CommonFooter from '@/components/native/CommonFooter';
 import CommonHeader from '@/components/native/CommonHeader';
 import { Link, useRouter } from 'expo-router';
 import { Button, Input, Stack, View } from 'native-base';
+import { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 export default function AppHome() {
   const router = useRouter();
+
+  const [pressed, setPressed] = useState(false);
+
+  const handlePressIn = () => {
+    setPressed(true);
+  };
+
+  const handlePressOut = () => {
+    setPressed(false);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -26,16 +38,20 @@ export default function AppHome() {
               com a loteria!
             </Text>
 
-            <Button
-              marginLeft={'auto'}
-              marginRight={'auto'}
-              marginTop={'32px'}
-              background={'#1D4ED8'}
-              width={'220px'}
-              height={'53px'}
-            >
-              <Text style={styles.lotteryButtonText}>Consultar</Text>
-            </Button>
+            <ButtonComponent
+              label="Consultar"
+              buttonProps={{
+                variant: 'solid',
+                bgColor: '#1D4ED8',
+                marginLEft: 'auto',
+                marginRight: 'auto',
+                marginTop: '32px',
+                height: '53px',
+                width: '100%',
+              }}
+              labelProps={{ style: styles.lotteryButtonText }}
+              onPress={() => router.push('/(tabs)')}
+            />
           </View>
         </Stack>
 
