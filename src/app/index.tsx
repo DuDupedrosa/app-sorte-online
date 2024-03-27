@@ -4,7 +4,13 @@ import CommonHeader from '@/src/components/native/CommonHeader';
 import { Link, useRouter } from 'expo-router';
 import { Button, Input, Stack, View } from 'native-base';
 import { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 
 export default function AppHome() {
   const router = useRouter();
@@ -21,42 +27,40 @@ export default function AppHome() {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* header */}
+      <CommonHeader />
       <View style={styles.content}>
-        {/* header */}
-        <CommonHeader />
+        <ScrollView>
+          {/* intro */}
+          <Stack mt={'70px'} mb={'40px'}>
+            {/* first-section-call-action */}
+            <View style={styles.lotteryContainer}>
+              <Text style={styles.lotteryTitle}>Consulte uma loteria</Text>
+              <Text style={styles.lotteryText}>
+                Com o Sorte Online, consulte facilmente os resultados dos
+                concursos de loteria atuais e anteriores. Esteja sempre por
+                dentro dos números sorteados e dos prêmios distribuídos em suas
+                loterias favoritas. clique no botão abaixo e simplifique sua
+                experiência com a loteria!
+              </Text>
 
-        {/* intro */}
-        <Stack marginTop={'72px'}>
-          {/* first-section-call-action */}
-          <View style={styles.lotteryContainer}>
-            <Text style={styles.lotteryTitle}>Consulte uma loteria</Text>
-            <Text style={styles.lotteryText}>
-              Com o Sorte Online, consulte facilmente os resultados dos
-              concursos de loteria atuais e anteriores. Esteja sempre por dentro
-              dos números sorteados e dos prêmios distribuídos em suas loterias
-              favoritas. clique no botão abaixo e simplifique sua experiência
-              com a loteria!
-            </Text>
-
-            <ButtonComponent
-              label="Consultar"
-              buttonProps={{
-                variant: 'solid',
-                bgColor: '#1D4ED8',
-                marginLEft: 'auto',
-                marginRight: 'auto',
-                marginTop: '32px',
-                height: '53px',
-                width: '100%',
-              }}
-              labelProps={{ style: styles.lotteryButtonText }}
-              onPress={() => router.push('/(tabs)')}
-            />
-          </View>
-        </Stack>
-
-        {/* FOOTER */}
-        <CommonFooter />
+              <ButtonComponent
+                label="Consultar"
+                buttonProps={{
+                  variant: 'solid',
+                  bgColor: '#1D4ED8',
+                  marginLEft: 'auto',
+                  marginRight: 'auto',
+                  marginTop: '32px',
+                  height: '53px',
+                  width: '100%',
+                }}
+                labelProps={{ style: styles.lotteryButtonText }}
+                onPress={() => router.push('/(tabs)')}
+              />
+            </View>
+          </Stack>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -69,7 +73,6 @@ const styles = StyleSheet.create({
   },
   content: {
     marginTop: 20,
-    height: '95%',
   },
   lotteryContainer: {
     backgroundColor: '#1F2937',

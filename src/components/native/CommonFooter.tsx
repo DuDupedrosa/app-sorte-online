@@ -18,8 +18,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   container: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
+    marginBottom: 20,
   },
 });
