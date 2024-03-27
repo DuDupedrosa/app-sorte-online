@@ -1,4 +1,4 @@
-import { appConfig } from '@/constants/config';
+import { appConfig } from '@/src/constants/config';
 import { Link, useRouter } from 'expo-router';
 import { Button, Text, View } from 'native-base';
 import {
@@ -20,7 +20,7 @@ export default function CommonHeader() {
             style={styles.logoTouchOpacity}
             onPress={() => router.push('/')}
           >
-            <Image source={require('@/assets/images/logo.png')} />
+            <Image source={require('@/src/assets/images/logo.png')} />
             <Text style={styles.logoName}>{appConfig.name}</Text>
           </TouchableOpacity>
         </View>

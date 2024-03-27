@@ -1,8 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
-import { Button } from 'native-base';
+import { Button, View, Text } from 'native-base';
 import { useRouter } from 'expo-router';
 
 export default function TabOneScreen() {
@@ -12,12 +10,7 @@ export default function TabOneScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
       <Button onPress={() => router.push('/')}>VOLTAR PARA HOME</Button>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <View style={styles.separator} />
     </View>
   );
 }

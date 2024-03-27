@@ -1,6 +1,6 @@
-import ButtonComponent from '@/components/native/ButtonComponent';
-import CommonFooter from '@/components/native/CommonFooter';
-import CommonHeader from '@/components/native/CommonHeader';
+import ButtonComponent from '@/src/components/native/ButtonComponent';
+import CommonFooter from '@/src/components/native/CommonFooter';
+import CommonHeader from '@/src/components/native/CommonHeader';
 import { Link, useRouter } from 'expo-router';
 import { Button, Input, Stack, View } from 'native-base';
 import { useState } from 'react';
