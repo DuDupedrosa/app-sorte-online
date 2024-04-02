@@ -30,17 +30,12 @@ export default function TabLayout() {
         // to prevent a hydration error in React Navigation v6.
       }}
     >
+      {/* não temos a home, pois a home, porque a home é na área deslogada */}
+      {/* importante lembrar a index é a page principal, então sempre precisamos ter ela!   */}
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="two"
-        options={{
-          title: 'Loterias',
+          title: 'loterias',
           tabBarIcon: ({ color }) => (
             <FontAwesome6 name="clover" size={28} color={color} />
           ),

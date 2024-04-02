@@ -29,8 +29,8 @@ export default function AppHome() {
     <SafeAreaView style={styles.container}>
       {/* header */}
       <CommonHeader />
-      <View style={styles.content}>
-        <ScrollView>
+      <ScrollView>
+        <View style={styles.content}>
           {/* intro */}
           <Stack mt={'70px'} mb={'40px'}>
             {/* first-section-call-action */}
@@ -60,8 +60,8 @@ export default function AppHome() {
               />
             </View>
           </Stack>
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

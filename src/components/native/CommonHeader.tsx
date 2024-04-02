@@ -7,8 +7,13 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 
-export default function CommonHeader() {
+type Props = {
+  showButtonBackHome?: boolean;
+};
+
+export default function CommonHeader({ showButtonBackHome }: Props) {
   const router = useRouter();
 
   return (
@@ -16,13 +21,23 @@ export default function CommonHeader() {
       <View style={styles.content}>
         {/* logo container */}
         <View style={styles.logoContainer}>
-          <TouchableOpacity
-            style={styles.logoTouchOpacity}
-            onPress={() => router.push('/')}
-          >
-            <Image source={require('@/src/assets/images/logo.png')} />
-            <Text style={styles.logoName}>{appConfig.name}</Text>
-          </TouchableOpacity>
+          {/* BACK TO HOME */}
+          {showButtonBackHome && (
+            <TouchableOpacity onPress={() => router.push('/')}>
+              <AntDesign name="arrowleft" size={28} color="white" />
+            </TouchableOpacity>
+          )}
+
+          {/* LOGO */}
+          <View style={styles.logoTouchOpacityContainer}>
+            <TouchableOpacity
+              style={styles.logoTouchOpacity}
+              onPress={() => router.push('/')}
+            >
+              <Image source={require('@/src/assets/images/logo.png')} />
+              <Text style={styles.logoName}>{appConfig.name}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -39,13 +54,17 @@ const styles = StyleSheet.create({
   logoContainer: {
     marginTop: 8,
     flexDirection: 'row',
-    justifyContent: 'center',
     width: '100%',
   },
   logoTouchOpacity: {
     flexDirection: 'row',
     alignItems: 'flex-end',
     gap: 8,
+  },
+  logoTouchOpacityContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   logoName: {
     fontSize: 20,
