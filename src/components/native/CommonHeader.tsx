@@ -8,13 +8,25 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { colors } from '@/src/constants/theme/colors';
 
 type Props = {
   showButtonBackHome?: boolean;
+  lastPage?: boolean;
 };
 
-export default function CommonHeader({ showButtonBackHome }: Props) {
+export default function CommonHeader({ showButtonBackHome, lastPage }: Props) {
   const router = useRouter();
+
+  function handleGoBack() {
+    // passou o last page, ele volta para a última rota visitada.
+    if (lastPage) {
+      router.back();
+      return;
+    }
+
+    router.push('/');
+  }
 
   return (
     <SafeAreaView>
@@ -23,7 +35,7 @@ export default function CommonHeader({ showButtonBackHome }: Props) {
         <View style={styles.logoContainer}>
           {/* BACK TO HOME */}
           {showButtonBackHome && (
-            <TouchableOpacity onPress={() => router.push('/')}>
+            <TouchableOpacity onPress={() => handleGoBack()}>
               <AntDesign name="arrowleft" size={28} color="white" />
             </TouchableOpacity>
           )}
@@ -47,14 +59,18 @@ export default function CommonHeader({ showButtonBackHome }: Props) {
 const styles = StyleSheet.create({
   content: {
     width: '100%',
-    height: 74,
-    padding: 16,
-    marginTop: 50,
+    marginBottom: 32,
+    height: 102,
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    backgroundColor: colors.gray.gray_800,
   },
   logoContainer: {
     marginTop: 8,
     flexDirection: 'row',
     width: '100%',
+    paddingHorizontal: 20,
+    paddingBottom: 20,
   },
   logoTouchOpacity: {
     flexDirection: 'row',

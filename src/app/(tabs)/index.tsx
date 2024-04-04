@@ -98,6 +98,7 @@ export default function TabOneScreen() {
                   padding: 1,
                 }}
                 labelProps={styles.buttonCardLabel}
+                onPress={() => router.push('/resultConsultLottery')}
               />
             </View>
           </View>
@@ -159,9 +160,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.gray.gray_900,
   },
   content: {
-    padding: 20,
-    marginTop: 20,
     paddingBottom: 60,
+    paddingHorizontal: 20,
   },
   lotteryCard: {
     flexDirection: 'column',
