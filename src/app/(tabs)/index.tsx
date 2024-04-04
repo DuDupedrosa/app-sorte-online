@@ -56,6 +56,10 @@ const lotteryOptions = [
 export default function TabOneScreen() {
   const router = useRouter();
 
+  function handleGoConsultLottery(lotteryName: string) {
+    router.push({ pathname: '/[lottery]', params: { lottery: lotteryName } });
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       {/* HEADER */}
@@ -98,7 +102,7 @@ export default function TabOneScreen() {
                   padding: 1,
                 }}
                 labelProps={styles.buttonCardLabel}
-                onPress={() => router.push('/resultConsultLottery')}
+                onPress={() => handleGoConsultLottery('megasena')}
               />
             </View>
           </View>

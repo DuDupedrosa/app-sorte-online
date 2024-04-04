@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
-const http = axios.create({
+export const http = axios.create({
   headers: { 'Content-Type': 'application/json' },
   baseURL: process.env.EXPO_PUBLIC_API_BASE_URL,
 });
@@ -11,7 +11,7 @@ http.interceptors.response.use(
   },
   async (error: AxiosError) => {
     let errStatus = null;
-
+    console.warn(error);
     if (error.response) {
       errStatus = error.response.status;
     }

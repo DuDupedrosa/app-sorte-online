@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 import { NativeBaseProvider } from 'native-base';
 import { SafeAreaView } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -31,6 +32,7 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
   });
+  const queryClient = new QueryClient();
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
@@ -49,7 +51,9 @@ export default function RootLayout() {
 
   return (
     <NativeBaseProvider>
-      <Slot />
+      <QueryClientProvider client={queryClient}>
+        <Slot />
+      </QueryClientProvider>
     </NativeBaseProvider>
   );
 }
