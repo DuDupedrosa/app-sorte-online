@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
-const http = axios.create({
+export const http = axios.create({
   headers: { 'Content-Type': 'application/json' },
   baseURL: process.env.EXPO_PUBLIC_API_BASE_URL,
 });
