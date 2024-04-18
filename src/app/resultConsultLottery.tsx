@@ -1,38 +1,58 @@
-import { View, Text } from 'native-base';
+import { View, Text, Skeleton } from 'native-base';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { colors } from '../constants/theme/colors';
 import CommonHeader from '../components/native/CommonHeader';
 import SectionIntroTitle from '../components/native/SectionIntroTitle';
 import ButtonComponent from '../components/native/ButtonComponent';
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
-import { useQuery } from '@tanstack/react-query';
 import { http } from '../api/https';
-import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { formattedCurrency } from '../helper/methods/currency/currencyHelper';
+
+// component to skeleton item (label + value)
+function SkeletonItem() {
+  return (
+    <View style={{ gap: 20 }}>
+      <Skeleton w={220} h={4} rounded={8} />
+      <Skeleton w={120} h={4} rounded={8} />
+    </View>
+  );
+}
+
+const countSkeletonItems = [1, 2, 3, 4];
 
 export default function ResultConsultLottery() {
   const router = useRouter();
+  const [lotteryData, setLotteryData] = useState<LotteryData | null>(null);
   const params = useLocalSearchParams<{ lottery: string }>();
-  const [lotteryData, setLotteryData] = useState<null | LotteryData>(null);
-  // request lottery
-  const getLatestLotteryResult = async () => {
-    const { data } = await http.get(`/${params.lottery}/latest`);
+
+  const getLottery = async () => {
+    const { data } = await http.get(`/api/${params.lottery}/latest`);
 
     return data;
   };
 
-  const useGetLatestLotteryResult = useQuery({
-    queryKey: ['getLatestsLottery'],
-    queryFn: async () => {
-      return await getLatestLotteryResult();
-    },
+  const useGetLottery = useQuery({
+    queryKey: ['GetLottery'],
+    queryFn: getLottery,
+    enabled: false,
   });
 
   useEffect(() => {
-    if (useGetLatestLotteryResult.isSuccess) {
-      console.warn(useGetLatestLotteryResult.data);
-      setLotteryData(useGetLatestLotteryResult.data);
+    if (useGetLottery.isSuccess) {
+      setLotteryData(useGetLottery.data);
     }
-  }, [useGetLatestLotteryResult.isSuccess]);
+  }, [useGetLottery.isSuccess]);
+
+  // get lottery when params is passed
+  useEffect(() => {
+    if (params.lottery) {
+      if (!useGetLottery.isLoading) {
+        useGetLottery.refetch();
+      }
+    }
+  }, [params]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -51,10 +71,22 @@ export default function ResultConsultLottery() {
           <Link href={'/(tabs)/'} style={styles.linkNewConsult}>
             Nova busca
           </Link>
+
+          {/* skeleton */}
+          {/* <View style={styles.skeletonContainer}>
+            {countSkeletonItems.map((skeleton, i: number) => {
+              return <SkeletonItem key={i} />;
+            })}
+
+            <View style={styles.buttonContainerSkeleton}>
+              <Skeleton w={120} h={41} rounded={4} />
+            </View>
+          </View> */}
+
           {/* card resultado */}
           {lotteryData && (
             <View style={styles.cardContainer}>
-              {/* label + value */}
+              {/* loteria */}
               <View style={styles.cardLabelAndValueContainer}>
                 <Text style={styles.cardLabel}>Loteria:</Text>
                 <Text style={styles.cardValue}>{lotteryData.loteria}</Text>
@@ -66,57 +98,71 @@ export default function ResultConsultLottery() {
 
                 {/* DEZENAS PARA DAR UM LOOP */}
                 <View style={styles.cardLotteryNumbersContainer}>
-                  {lotteryData.dezenas.length > 0 &&
-                    lotteryData.dezenas.map((lottery, i) => {
-                      return (
-                        <Text key={i} style={styles.cardLotteryNumbers}>
-                          {lottery}
-                        </Text>
-                      );
-                    })}
+                  {lotteryData.dezenas.map((number, i: number) => {
+                    return (
+                      <Text style={styles.cardLotteryNumbers} key={i}>
+                        {number}
+                      </Text>
+                    );
+                  })}
                 </View>
               </View>
 
-              {/* label + value */}
-              <View style={styles.cardLabelAndValueContainer}>
-                <Text style={styles.cardLabel}>
-                  Acumulou: {lotteryData.acumulou ? 'SIM' : 'NÃO'}
-                </Text>
-              </View>
-
-              {/* label + value */}
+              {/* concurso */}
               <View style={styles.cardLabelAndValueContainer}>
                 <Text style={styles.cardLabel}>Concurso:</Text>
                 <Text style={styles.cardValue}>{lotteryData.concurso}</Text>
               </View>
 
-              {/* label + value */}
+              {/* data do sorteio */}
               <View style={styles.cardLabelAndValueContainer}>
-                <Text style={styles.cardLabel}>Data concurso:</Text>
+                <Text style={styles.cardLabel}>Data do sorteio:</Text>
                 <Text style={styles.cardValue}>{lotteryData.data}</Text>
               </View>
 
-              {/* label + value */}
+              {/* acumulou */}
               <View style={styles.cardLabelAndValueContainer}>
-                <Text style={styles.cardLabel}>Data prox concurso:</Text>
+                <Text style={styles.cardLabel}>Acumulou:</Text>
                 <Text style={styles.cardValue}>
-                  {lotteryData.dataProximoConcurso}
+                  {lotteryData.acumulou ? 'SIM' : 'NÃO'}
                 </Text>
               </View>
 
-              {/* label + value */}
-              <View style={styles.cardLabelAndValueContainer}>
-                <Text style={styles.cardLabel}>Local:</Text>
-                <Text style={styles.cardValue}>{lotteryData.local}</Text>
-              </View>
+              {/* valor acumulado para o prox concurso */}
+              {lotteryData.acumulou && (
+                <View style={styles.cardLabelAndValueContainer}>
+                  <Text style={styles.cardLabel}>Valor acumulado:</Text>
+                  <Text style={styles.cardValue}>
+                    {formattedCurrency(
+                      lotteryData.valorAcumuladoProximoConcurso
+                    )}
+                  </Text>
+                </View>
+              )}
 
               {/* label + value */}
-              <View style={styles.cardLabelAndValueContainer}>
-                <Text style={styles.cardLabel}>Valor acumulado prox:</Text>
-                <Text style={styles.cardValue}>
-                  {lotteryData.valorAcumuladoProximoConcurso}
-                </Text>
-              </View>
+              {lotteryData.acumulou && lotteryData.dataProximoConcurso && (
+                <View style={styles.cardLabelAndValueContainer}>
+                  <Text style={styles.cardLabel}>Data próximo concurso:</Text>
+                  <Text style={styles.cardValue}>
+                    {lotteryData.dataProximoConcurso}
+                  </Text>
+                </View>
+              )}
+
+              {lotteryData.acumulou &&
+                lotteryData.valorEstimadoProximoConcurso && (
+                  <View style={styles.cardLabelAndValueContainer}>
+                    <Text style={styles.cardLabel}>
+                      Valor estimado próximo concurso:
+                    </Text>
+                    <Text style={styles.cardValue}>
+                      {formattedCurrency(
+                        lotteryData.valorEstimadoProximoConcurso
+                      )}
+                    </Text>
+                  </View>
+                )}
 
               {/* BUTTON END CARD PARA NOVA BUSCA */}
               <ButtonComponent
@@ -151,7 +197,7 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   cardLabelAndValueContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     gap: 8,
   },
   cardLabel: {
@@ -161,14 +207,14 @@ const styles = StyleSheet.create({
   cardValue: {
     color: colors.gray.gray_400,
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: 'bold',
   },
   cardContainer: {
     padding: 20,
     borderRadius: 8,
     backgroundColor: colors.gray.gray_800,
     flexDirection: 'column',
-    gap: 20,
+    gap: 30,
   },
   cardLotteryNumbers: {
     width: 32,
@@ -188,7 +234,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 12,
-    paddingRight: 80,
+    paddingRight: 20,
   },
   linkNewConsult: {
     color: colors.primary.primary_600,
@@ -197,5 +243,16 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     marginBottom: 12,
     padding: 2,
+  },
+  skeletonContainer: {
+    backgroundColor: colors.gray.gray_800,
+    borderRadius: 8,
+    padding: 20,
+    gap: 30,
+    position: 'relative',
+  },
+  buttonContainerSkeleton: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
 });

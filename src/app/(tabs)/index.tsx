@@ -13,51 +13,16 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import Divider from '@/src/components/native/Divider';
 import SectionIntroTitle from '@/src/components/native/SectionIntroTitle';
 import { colors } from '@/src/constants/theme/colors';
-
-const lotteryOptions = [
-  {
-    name: 'Maismilionaria',
-    color: '#2563eb',
-  },
-  {
-    name: 'Lotofácil',
-    color: '#ea580c',
-  },
-  {
-    name: 'Quina',
-    color: '#ca8a04',
-  },
-  {
-    name: 'lotomania',
-    color: '#65a30d',
-  },
-  {
-    name: 'Timemania',
-    color: '#7c3aed',
-  },
-  {
-    name: 'Dupla-sena',
-    color: '#db2777',
-  },
-  {
-    name: 'Federal',
-    color: '#9333ea',
-  },
-  {
-    name: 'Dia de sorte',
-    color: '#4f46e5',
-  },
-  {
-    name: 'Super sete',
-    color: '#dc2626',
-  },
-];
+import { lotteryOptions } from '@/src/helper/lottery/lotteryOptions';
 
 export default function TabOneScreen() {
   const router = useRouter();
 
-  function handleGoConsultLottery(lotteryName: string) {
-    router.push({ pathname: '/[lottery]', params: { lottery: lotteryName } });
+  function handleConsultLottery(lottery: string) {
+    router.push({
+      pathname: '/resultConsultLottery',
+      params: { lottery: lottery },
+    });
   }
 
   return (
@@ -102,7 +67,7 @@ export default function TabOneScreen() {
                   padding: 1,
                 }}
                 labelProps={styles.buttonCardLabel}
-                onPress={() => handleGoConsultLottery('megasena')}
+                onPress={() => handleConsultLottery('megasena')}
               />
             </View>
           </View>
@@ -132,7 +97,7 @@ export default function TabOneScreen() {
                         color={lottery.color}
                       />
                       <Text style={styles.cardLotteryTitle}>
-                        {lottery.name}
+                        {lottery.label}
                       </Text>
                     </View>
 
@@ -145,6 +110,7 @@ export default function TabOneScreen() {
                         padding: 1,
                       }}
                       labelProps={styles.buttonCardLabel}
+                      onPress={() => handleConsultLottery(lottery.name)}
                     />
                   </View>
                 );
@@ -204,7 +170,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    textTransform: 'capitalize',
+    textTransform: 'uppercase',
   },
   buttonCardLabel: {
     fontSize: 14,

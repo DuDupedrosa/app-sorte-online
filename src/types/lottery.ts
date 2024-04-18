@@ -1,11 +1,23 @@
+type Lottery = {
+  name: string;
+  label: string;
+  color: string;
+};
+
 type LotteryData = {
   acumulou: boolean;
-  concurso: string;
+  concurso: number;
   data: string;
-  dataProximoConcurso: string;
   dezenas: string[];
-  local: string;
   loteria: string;
-  proximoConcurso: string;
+  proximoConcurso: number;
   valorAcumuladoProximoConcurso: number;
+  dataProximoConcurso: string;
+  valorEstimadoProximoConcurso: number;
+  premiacoes: {
+    descricao: string;
+    faixa: number;
+    ganhadores: number;
+    valorPremio: number;
+  }[];
 };
