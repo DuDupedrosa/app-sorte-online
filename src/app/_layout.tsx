@@ -28,12 +28,11 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const queryClient = new QueryClient();
-
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
   });
+  const queryClient = new QueryClient();
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {

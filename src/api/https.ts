@@ -11,7 +11,7 @@ http.interceptors.response.use(
   },
   async (error: AxiosError) => {
     let errStatus = null;
-
+    console.warn(error);
     if (error.response) {
       errStatus = error.response.status;
     }
