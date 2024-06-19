@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { Button, View, Text, Stack } from 'native-base';
+import { Button, View, Text, Stack, Badge } from 'native-base';
 import { useRouter } from 'expo-router';
 import CommonHeader from '@/src/components/native/CommonHeader';
 import ButtonComponent from '@/src/components/native/ButtonComponent';
@@ -21,7 +21,7 @@ export default function TabOneScreen() {
   function handleConsultLottery(lottery: string) {
     router.push({
       pathname: '/resultConsultLottery',
-      params: { lottery: lottery },
+      params: { lottery: lottery, lotteryNumber: '0' },
     });
   }
 
@@ -77,7 +77,13 @@ export default function TabOneScreen() {
 
           {/* LOTERIAS */}
           {/* TITLE */}
-          <Text style={styles.moreLotteryOptionsTitle}>Concursos:</Text>
+          <View flexDirection={'row'} mb={'16px'}>
+            <Text style={styles.moreLotteryOptionsTitle}>Concursos:</Text>
+            <Text style={styles.totalLotteryNumber} ml={2}>
+              {lotteryOptions.length}
+            </Text>
+          </View>
+
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View style={{ flexDirection: 'row', gap: 20 }}>
               {lotteryOptions.map((lottery, i: number) => {
@@ -207,5 +213,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 12,
     textTransform: 'capitalize',
+    flexDirection: 'row',
+    gap: 2,
+  },
+  totalLotteryNumber: {
+    fontSize: 18,
+    color: colors.light,
+    fontWeight: 'bold',
+    borderRadius: 8,
+    backgroundColor: colors.primary.primary_600,
+    width: 26,
+    height: 26,
+    textAlign: 'center',
+    paddingTop: 1,
   },
 });

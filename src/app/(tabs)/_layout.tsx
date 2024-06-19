@@ -42,11 +42,11 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="helper"
+        name="searchOneLottery"
         options={{
-          title: 'Suporte',
+          title: 'Pesquisar',
           tabBarIcon: ({ color }) => (
-            <MaterialIcons name="support-agent" size={28} color={color} />
+            <MaterialIcons name="search" size={28} color={color} />
           ),
         }}
       />

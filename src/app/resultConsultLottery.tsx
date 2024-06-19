@@ -1,4 +1,4 @@
-import { View, Text, Skeleton } from 'native-base';
+import { View, Text, Skeleton, Spinner, HStack, Heading } from 'native-base';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { colors } from '../constants/theme/colors';
 import CommonHeader from '../components/native/CommonHeader';
@@ -20,15 +20,20 @@ function SkeletonItem() {
   );
 }
 
-const countSkeletonItems = [1, 2, 3, 4];
-
 export default function ResultConsultLottery() {
   const router = useRouter();
   const [lotteryData, setLotteryData] = useState<LotteryData | null>(null);
-  const params = useLocalSearchParams<{ lottery: string }>();
+  const params = useLocalSearchParams<{
+    lottery: string;
+    lotteryNumber: string;
+  }>();
 
   const getLottery = async () => {
-    const { data } = await http.get(`/api/${params.lottery}/latest`);
+    const { data } = await http.get(
+      `/${params.lottery}/${
+        params.lotteryNumber === '0' ? 'latest' : Number(params.lottery)
+      }`
+    );
 
     return data;
   };
@@ -67,24 +72,20 @@ export default function ResultConsultLottery() {
             subTitle="Resultado para a mega-sena"
           />
 
+          {/* page loading */}
+          {useGetLottery.isLoading && (
+            <Spinner accessibilityLabel="Loading posts" size={'lg'} />
+          )}
+
           {/* LINK TOP CARD NEW CONSULT */}
-          <Link href={'/(tabs)/'} style={styles.linkNewConsult}>
-            Nova busca
-          </Link>
-
-          {/* skeleton */}
-          {/* <View style={styles.skeletonContainer}>
-            {countSkeletonItems.map((skeleton, i: number) => {
-              return <SkeletonItem key={i} />;
-            })}
-
-            <View style={styles.buttonContainerSkeleton}>
-              <Skeleton w={120} h={41} rounded={4} />
-            </View>
-          </View> */}
+          {!useGetLottery.isLoading && (
+            <Link href={'/(tabs)/'} style={styles.linkNewConsult}>
+              Nova busca
+            </Link>
+          )}
 
           {/* card resultado */}
-          {lotteryData && (
+          {lotteryData && !useGetLottery.isLoading && (
             <View style={styles.cardContainer}>
               {/* loteria */}
               <View style={styles.cardLabelAndValueContainer}>
@@ -254,5 +255,11 @@ const styles = StyleSheet.create({
   buttonContainerSkeleton: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
+  },
+  loadingText: {
+    color: colors.light,
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 1,
   },
 });
