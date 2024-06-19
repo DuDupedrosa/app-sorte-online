@@ -1,5 +1,5 @@
 import { View, Text, Skeleton, Spinner, HStack, Heading } from 'native-base';
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, Image } from 'react-native';
 import { colors } from '../constants/theme/colors';
 import CommonHeader from '../components/native/CommonHeader';
 import SectionIntroTitle from '../components/native/SectionIntroTitle';
@@ -10,16 +10,6 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { formattedCurrency } from '../helper/methods/currency/currencyHelper';
 
-// component to skeleton item (label + value)
-function SkeletonItem() {
-  return (
-    <View style={{ gap: 20 }}>
-      <Skeleton w={220} h={4} rounded={8} />
-      <Skeleton w={120} h={4} rounded={8} />
-    </View>
-  );
-}
-
 export default function ResultConsultLottery() {
   const router = useRouter();
   const [lotteryData, setLotteryData] = useState<LotteryData | null>(null);
@@ -29,6 +19,8 @@ export default function ResultConsultLottery() {
   }>();
   const [searchOneLottery, setSearchOneLottery] = useState<boolean>(false);
   const queryClient = useQueryClient();
+  const [showNotFoundLottery, setShowNotFoundLottery] =
+    useState<boolean>(false);
 
   const getLottery = async () => {
     const { data } = await http.get(
@@ -50,7 +42,10 @@ export default function ResultConsultLottery() {
   useEffect(() => {
     if (useGetLottery.isSuccess) {
       setLotteryData(useGetLottery.data);
-      console.warn(useGetLottery.data);
+
+      if (!useGetLottery.data) {
+        setShowNotFoundLottery(true);
+      }
     }
   }, [useGetLottery.isSuccess]);
 
@@ -80,13 +75,50 @@ export default function ResultConsultLottery() {
             subTitle="Resultado para a mega-sena"
           />
 
+          {/* not found section  */}
+          {/* case de api return 200 with no-content */}
+          {!useGetLottery.isLoading &&
+            useGetLottery.isSuccess &&
+            showNotFoundLottery && (
+              <View>
+                {/* image not found */}
+                <Image
+                  style={styles.notFoundLotteryImage}
+                  source={require('@/src/assets/images/not-found.png')}
+                  // defines whats'll with image em resize
+                  resizeMode="cover"
+                />
+
+                {/* content */}
+                <View>
+                  {/* <Text style={styles.notFoundLotteryTitle}>Ops!</Text> */}
+                  <Text style={styles.notFoundLotteryText}>
+                    Parece que não encontramos um resultado correspondente à sua
+                    busca. Por favor, clique em realizar nova busca e tente
+                    novamente.
+                  </Text>
+
+                  <Link
+                    href={searchOneLottery ? '/searchOneLottery' : '/(tabs)/'}
+                    style={{
+                      ...styles.linkNewConsult,
+                      textAlign: 'center',
+                      marginTop: 24,
+                    }}
+                  >
+                    Realizar nova busca
+                  </Link>
+                </View>
+              </View>
+            )}
+
           {/* page loading */}
           {useGetLottery.isLoading && (
             <Spinner accessibilityLabel="Loading posts" size={'lg'} />
           )}
 
           {/* LINK TOP CARD NEW CONSULT */}
-          {!useGetLottery.isLoading && (
+          {!useGetLottery.isLoading && lotteryData && (
             <Link
               href={searchOneLottery ? '/searchOneLottery' : '/(tabs)/'}
               style={styles.linkNewConsult}
@@ -276,5 +308,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginTop: 1,
+  },
+  notFoundLotteryImage: {
+    width: 242,
+    height: 242,
+    // align center
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  notFoundLotteryTitle: {
+    fontSize: 20,
+    fontWeight: '500',
+    textAlign: 'center',
+    color: colors.gray.gray_200,
+    marginBottom: 8,
+  },
+  notFoundLotteryText: {
+    fontSize: 16,
+    fontWeight: 'normal',
+    textAlign: 'center',
+    color: colors.gray.gray_400,
   },
 });
