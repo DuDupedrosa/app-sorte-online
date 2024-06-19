@@ -78,7 +78,7 @@ export default function TabOneScreen() {
           {/* LOTERIAS */}
           {/* TITLE */}
           <View flexDirection={'row'} mb={'16px'}>
-            <Text style={styles.moreLotteryOptionsTitle}>Concursos:</Text>
+            <Text style={styles.moreLotteryOptionsTitle}>Loterias:</Text>
             <Text style={styles.totalLotteryNumber} ml={2}>
               {lotteryOptions.length}
             </Text>

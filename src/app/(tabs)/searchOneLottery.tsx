@@ -7,7 +7,6 @@ import {
   Input,
   View,
   Text,
-  Box,
   FormControl,
   WarningOutlineIcon,
   Select,
@@ -15,17 +14,29 @@ import {
 } from 'native-base';
 import ButtonComponent from '@/src/components/native/ButtonComponent';
 import { useEffect, useState } from 'react';
+import { fullLotteryOptions } from '@/src/helper/lottery/lotteryOptions';
+import { useRouter } from 'expo-router';
+
+function LabelComponent({ text }: { text: string }) {
+  return <Text style={styles.inputSearchLabel}>{text}</Text>;
+}
 
 export default function TabHelpScreen() {
   const [required, setRequired] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>('');
-  const [service, setService] = useState('');
+  const [lottery, setLottery] = useState('megasena');
+  const router = useRouter();
 
   function submit() {
     if (!inputValue) {
       setRequired(true);
       return;
     }
+
+    router.push({
+      pathname: '/resultConsultLottery',
+      params: { lottery, lotteryNumber: inputValue },
+    });
   }
 
   useEffect(() => {
@@ -48,7 +59,7 @@ export default function TabHelpScreen() {
           />
 
           <View>
-            <Text style={styles.inputSearchLabel}>Número do concurso:</Text>
+            <LabelComponent text="Número do concurso" />
             <FormControl isInvalid={required}>
               <Input
                 onChangeText={(e) => setInputValue(e)}
@@ -68,24 +79,34 @@ export default function TabHelpScreen() {
               </FormControl.ErrorMessage>
             </FormControl>
 
-            <Select
-              selectedValue={service}
-              minWidth="200"
-              accessibilityLabel="Choose Service"
-              placeholder="Choose Service"
-              _selectedItem={{
-                bg: 'teal.600',
-                endIcon: <CheckIcon size="5" />,
-              }}
-              mt={1}
-              onValueChange={(itemValue) => setService(itemValue)}
-            >
-              <Select.Item label="UX Research" value="ux" />
-              <Select.Item label="Web Development" value="web" />
-              <Select.Item label="Cross Platform Development" value="cross" />
-              <Select.Item label="UI Designing" value="ui" />
-              <Select.Item label="Backend Development" value="backend" />
-            </Select>
+            <View mt={'20px'}>
+              <LabelComponent text="Loteria" />
+              <Select
+                selectedValue={lottery}
+                minWidth="200"
+                accessibilityLabel="Choose lottery"
+                placeholder="Choose lottery"
+                marginTop={0}
+                bgColor={colors.gray.gray_800}
+                color={colors.gray.gray_400}
+                _selectedItem={{
+                  bg: colors.primary.primary_600,
+                  endIcon: <CheckIcon size="5" color={colors.light} />,
+                }}
+                mt={1}
+                onValueChange={(itemValue) => setLottery(itemValue)}
+              >
+                {fullLotteryOptions.map((lottery, i) => {
+                  return (
+                    <Select.Item
+                      key={i}
+                      label={lottery.label}
+                      value={lottery.name}
+                    />
+                  );
+                })}
+              </Select>
+            </View>
 
             <ButtonComponent
               label="Consultar"
@@ -115,6 +136,7 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 20,
+    paddingBottom: 40,
   },
   inputSearch: {
     backgroundColor: colors.gray.gray_800,
@@ -123,6 +145,6 @@ const styles = StyleSheet.create({
   inputSearchLabel: {
     color: colors.gray.gray_200,
     fontSize: 16,
-    marginBottom: 12,
+    marginBottom: 8,
   },
 });

@@ -6,7 +6,7 @@ import SectionIntroTitle from '../components/native/SectionIntroTitle';
 import ButtonComponent from '../components/native/ButtonComponent';
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import { http } from '../api/https';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { formattedCurrency } from '../helper/methods/currency/currencyHelper';
 
@@ -27,26 +27,30 @@ export default function ResultConsultLottery() {
     lottery: string;
     lotteryNumber: string;
   }>();
+  const [searchOneLottery, setSearchOneLottery] = useState<boolean>(false);
+  const queryClient = useQueryClient();
 
   const getLottery = async () => {
     const { data } = await http.get(
       `/${params.lottery}/${
-        params.lotteryNumber === '0' ? 'latest' : Number(params.lottery)
+        params.lotteryNumber === '0' ? 'latest' : Number(params.lotteryNumber)
       }`
     );
-
     return data;
   };
 
   const useGetLottery = useQuery({
-    queryKey: ['GetLottery'],
+    queryKey: ['getLottery'],
     queryFn: getLottery,
     enabled: false,
+    // cashing time
+    gcTime: 0,
   });
 
   useEffect(() => {
     if (useGetLottery.isSuccess) {
       setLotteryData(useGetLottery.data);
+      console.warn(useGetLottery.data);
     }
   }, [useGetLottery.isSuccess]);
 
@@ -56,6 +60,10 @@ export default function ResultConsultLottery() {
       if (!useGetLottery.isLoading) {
         useGetLottery.refetch();
       }
+    }
+
+    if (params.lotteryNumber && params.lotteryNumber !== '0') {
+      setSearchOneLottery(true);
     }
   }, [params]);
 
@@ -79,13 +87,16 @@ export default function ResultConsultLottery() {
 
           {/* LINK TOP CARD NEW CONSULT */}
           {!useGetLottery.isLoading && (
-            <Link href={'/(tabs)/'} style={styles.linkNewConsult}>
+            <Link
+              href={searchOneLottery ? '/searchOneLottery' : '/(tabs)/'}
+              style={styles.linkNewConsult}
+            >
               Nova busca
             </Link>
           )}
 
           {/* card resultado */}
-          {lotteryData && !useGetLottery.isLoading && (
+          {!useGetLottery.isLoading && lotteryData && (
             <View style={styles.cardContainer}>
               {/* loteria */}
               <View style={styles.cardLabelAndValueContainer}>
@@ -178,7 +189,11 @@ export default function ResultConsultLottery() {
                   textTransform: 'capitalize',
                   fontWeight: 'bold',
                 }}
-                onPress={() => router.push('/(tabs)/')}
+                onPress={() =>
+                  router.push(
+                    searchOneLottery ? '/searchOneLottery' : '/(tabs)/'
+                  )
+                }
               />
             </View>
           )}

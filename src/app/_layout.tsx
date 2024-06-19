@@ -32,7 +32,11 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
   });
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: { refetchOnWindowFocus: false },
+    },
+  });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
