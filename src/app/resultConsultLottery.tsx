@@ -9,6 +9,8 @@ import { http } from '../api/https';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { formattedCurrency } from '../helper/methods/currency/currencyHelper';
+import NotFoundError from '../components/native/NotFoundError';
+import ErrorPage from '../components/native/ErrorPage';
 
 export default function ResultConsultLottery() {
   const router = useRouter();
@@ -21,6 +23,7 @@ export default function ResultConsultLottery() {
   const queryClient = useQueryClient();
   const [showNotFoundLottery, setShowNotFoundLottery] =
     useState<boolean>(false);
+  const [errorPage, setErrorPage] = useState<boolean>(false);
 
   const getLottery = async () => {
     const { data } = await http.get(
@@ -37,6 +40,7 @@ export default function ResultConsultLottery() {
     enabled: false,
     // cashing time
     gcTime: 0,
+    retry: 1,
   });
 
   useEffect(() => {
@@ -52,7 +56,8 @@ export default function ResultConsultLottery() {
   // get lottery when params is passed
   useEffect(() => {
     if (params.lottery) {
-      if (!useGetLottery.isLoading) {
+      // não chama no erro
+      if (!useGetLottery.isLoading && !useGetLottery.isError) {
         useGetLottery.refetch();
       }
     }
@@ -61,6 +66,12 @@ export default function ResultConsultLottery() {
       setSearchOneLottery(true);
     }
   }, [params]);
+
+  useEffect(() => {
+    if (useGetLottery.isError) {
+      setErrorPage(true);
+    }
+  }, [useGetLottery.isError]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -75,42 +86,16 @@ export default function ResultConsultLottery() {
             subTitle="Resultado para a mega-sena"
           />
 
+          {/* error page */}
+          {!useGetLottery.isLoading && useGetLottery.isError && errorPage && (
+            <ErrorPage />
+          )}
+
           {/* not found section  */}
           {/* case de api return 200 with no-content */}
           {!useGetLottery.isLoading &&
             useGetLottery.isSuccess &&
-            showNotFoundLottery && (
-              <View>
-                {/* image not found */}
-                <Image
-                  style={styles.notFoundLotteryImage}
-                  source={require('@/src/assets/images/not-found.png')}
-                  // defines whats'll with image em resize
-                  resizeMode="cover"
-                />
-
-                {/* content */}
-                <View>
-                  {/* <Text style={styles.notFoundLotteryTitle}>Ops!</Text> */}
-                  <Text style={styles.notFoundLotteryText}>
-                    Parece que não encontramos um resultado correspondente à sua
-                    busca. Por favor, clique em realizar nova busca e tente
-                    novamente.
-                  </Text>
-
-                  <Link
-                    href={searchOneLottery ? '/searchOneLottery' : '/(tabs)/'}
-                    style={{
-                      ...styles.linkNewConsult,
-                      textAlign: 'center',
-                      marginTop: 24,
-                    }}
-                  >
-                    Realizar nova busca
-                  </Link>
-                </View>
-              </View>
-            )}
+            showNotFoundLottery && <NotFoundError />}
 
           {/* page loading */}
           {useGetLottery.isLoading && (
