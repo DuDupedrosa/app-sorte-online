@@ -54,12 +54,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: colors.gray.gray_200,
     marginBottom: 8,
+    fontFamily: 'RobotoMedium',
   },
   notFoundLotteryText: {
     fontSize: 16,
     fontWeight: 'normal',
     textAlign: 'center',
     color: colors.gray.gray_400,
+    fontFamily: 'RobotoRegular',
   },
   linkNewConsult: {
     color: colors.primary.primary_600,
@@ -68,5 +70,6 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     marginBottom: 12,
     padding: 2,
+    fontFamily: 'RobotoBold',
   },
 });

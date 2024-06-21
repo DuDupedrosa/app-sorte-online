@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#9CA3AF',
     textAlign: 'center',
+    fontFamily: 'RobotoRegular',
   },
   container: {
     marginBottom: 20,

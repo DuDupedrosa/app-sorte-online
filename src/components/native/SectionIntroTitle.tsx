@@ -25,11 +25,13 @@ const styles = StyleSheet.create({
     marginBottom: 18,
     textAlign: 'center',
     paddingTop: 12,
+    fontFamily: 'RobotoBold',
   },
   subTitlePage: {
     textAlign: 'center',
     color: colors.gray.gray_400,
     fontSize: 16,
+    fontFamily: 'RobotoRegular',
   },
   titlePageContainer: {
     marginBottom: 60,

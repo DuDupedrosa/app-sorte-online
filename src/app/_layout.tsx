@@ -30,6 +30,15 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    RobotoBold: require('../assets/fonts/Roboto-Bold.ttf'),
+    RobotoBoldItalic: require('../assets/fonts/Roboto-BoldItalic.ttf'),
+    RobotoMedium: require('../assets/fonts/Roboto-Medium.ttf'),
+    RobotoMediumItalic: require('../assets/fonts/Roboto-MediumItalic.ttf'),
+    RobotoLight: require('../assets/fonts/Roboto-Light.ttf'),
+    RobotoLightItalic: require('../assets/fonts/Roboto-LightItalic.ttf'),
+    RobotoRegular: require('../assets/fonts/Roboto-Regular.ttf'),
+    RobotoThin: require('../assets/fonts/Roboto-Thin.ttf'),
+    RobotoThinItalic: require('../assets/fonts/Roboto-Italic.ttf'),
     ...FontAwesome.font,
   });
   const queryClient = new QueryClient({

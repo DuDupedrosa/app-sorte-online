@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     textAlign: 'center',
     fontWeight: 'bold',
+    fontFamily: 'RobotoBold',
   },
   lotteryText: {
     textAlign: 'center',
@@ -94,11 +95,13 @@ const styles = StyleSheet.create({
     color: '#9CA3AF',
     lineHeight: 20,
     fontWeight: '500',
+    fontFamily: 'RobotoMedium',
   },
   lotteryButtonText: {
     color: '#E5E7EB',
     textTransform: 'uppercase',
     fontSize: 14,
     fontWeight: 'bold',
+    fontFamily: 'RobotoBold',
   },
 });

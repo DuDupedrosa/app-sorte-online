@@ -236,11 +236,13 @@ const styles = StyleSheet.create({
   cardLabel: {
     color: colors.gray.gray_200,
     fontSize: 18,
+    fontFamily: 'RobotoRegular',
   },
   cardValue: {
     color: colors.gray.gray_400,
     fontSize: 16,
     fontWeight: 'bold',
+    fontFamily: 'RobotoBold',
   },
   cardContainer: {
     padding: 20,
@@ -262,6 +264,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     paddingTop: 3,
+    fontFamily: 'RobotoBold',
   },
   cardLotteryNumbersContainer: {
     flexDirection: 'row',
@@ -276,6 +279,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     marginBottom: 12,
     padding: 2,
+    fontFamily: 'RobotoBold',
   },
   skeletonContainer: {
     backgroundColor: colors.gray.gray_800,
@@ -293,6 +297,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginTop: 1,
+    fontFamily: 'RobotoBold',
   },
   notFoundLotteryImage: {
     width: 242,
@@ -307,11 +312,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: colors.gray.gray_200,
     marginBottom: 8,
+    fontFamily: 'RobotoMedium',
   },
   notFoundLotteryText: {
     fontSize: 16,
     fontWeight: 'normal',
     textAlign: 'center',
     color: colors.gray.gray_400,
+    fontFamily: 'RobotoRegular',
   },
 });

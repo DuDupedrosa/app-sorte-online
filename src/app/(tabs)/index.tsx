@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '500',
     textTransform: 'uppercase',
+    fontFamily: 'RobotoMedium',
   },
   lotteryContainer: {
     flexDirection: 'row',
@@ -177,6 +178,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     textTransform: 'uppercase',
+    fontFamily: 'RobotoBold',
   },
   buttonCardLabel: {
     fontSize: 14,
@@ -199,6 +201,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.gray.gray_900,
     textAlign: 'center',
+    fontFamily: 'RobotoBold',
   },
   // flex title, para o titulo dos cards
   cardLotteryFlexTitle: {
@@ -215,6 +218,7 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
     flexDirection: 'row',
     gap: 2,
+    fontFamily: 'RobotoBold',
   },
   totalLotteryNumber: {
     fontSize: 18,
@@ -226,5 +230,6 @@ const styles = StyleSheet.create({
     height: 26,
     textAlign: 'center',
     paddingTop: 1,
+    fontFamily: 'RobotoBold',
   },
 });
