@@ -14,10 +14,12 @@ import Divider from '@/src/components/native/Divider';
 import SectionIntroTitle from '@/src/components/native/SectionIntroTitle';
 import { colors } from '@/src/constants/theme/colors';
 import { lotteryOptions } from '@/src/helper/lottery/lotteryOptions';
+import Entypo from '@expo/vector-icons/Entypo';
+import { useState } from 'react';
 
 export default function TabOneScreen() {
   const router = useRouter();
-
+  const [cardInRow, setCardInRow] = useState<boolean>(false);
   function handleConsultLottery(lottery: string) {
     router.push({
       pathname: '/resultConsultLottery',
@@ -31,7 +33,7 @@ export default function TabOneScreen() {
       <CommonHeader showButtonBackHome={true} />
 
       {/* content */}
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
           {/* CARDS DOS SOREITOS */}
           {/* title container */}
@@ -77,22 +79,65 @@ export default function TabOneScreen() {
 
           {/* LOTERIAS */}
           {/* TITLE */}
-          <View flexDirection={'row'} mb={'16px'}>
-            <Text style={styles.moreLotteryOptionsTitle}>Loterias:</Text>
-            <Text style={styles.totalLotteryNumber} ml={2}>
-              {lotteryOptions.length}
-            </Text>
+          <View
+            flexDirection={'row'}
+            mb={'16px'}
+            justifyContent={'space-between'}
+            alignItems={'flex-end'}
+          >
+            {/* total de loterias */}
+            <View flexDirection={'row'}>
+              <Text style={styles.moreLotteryOptionsTitle}>Loterias:</Text>
+              <Text style={styles.totalLotteryNumber} ml={2}>
+                {lotteryOptions.length}
+              </Text>
+            </View>
+
+            {/* botões para mudar a pisção dos cards */}
+            <View style={styles.cardsDirectionsContainer}>
+              <Button
+                onPress={() => setCardInRow(false)}
+                bg={cardInRow ? 'transparent' : colors.primary.primary_700}
+                borderColor={cardInRow ? colors.gray.gray_400 : 'transparent'}
+                borderWidth={cardInRow ? 1 : 0}
+              >
+                <Entypo
+                  name="grid"
+                  size={24}
+                  color={cardInRow ? colors.gray.gray_400 : 'white'}
+                />
+              </Button>
+              <Button
+                onPress={() => setCardInRow(true)}
+                bg={cardInRow ? colors.primary.primary_700 : 'transparent'}
+                borderColor={cardInRow ? 'transparent' : colors.gray.gray_400}
+                borderWidth={cardInRow ? 0 : 1}
+              >
+                <Entypo
+                  name="menu"
+                  size={24}
+                  color={cardInRow ? 'white' : colors.gray.gray_400}
+                />
+              </Button>
+            </View>
           </View>
 
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View style={{ flexDirection: 'row', gap: 20 }}>
+          <ScrollView
+            horizontal={cardInRow}
+            showsHorizontalScrollIndicator={false}
+          >
+            <View
+              style={{ flexDirection: cardInRow ? 'row' : 'column', gap: 20 }}
+            >
               {lotteryOptions.map((lottery, i: number) => {
                 return (
                   <View
                     key={i}
                     style={{
-                      ...styles.mainLotteryContainer,
+                      ...styles.lotteryCardContainer,
                       borderColor: lottery.color,
+                      width: cardInRow ? 260 : '100%',
+                      height: cardInRow ? 160 : 'auto',
                     }}
                   >
                     {/* name + icon */}
@@ -108,16 +153,23 @@ export default function TabOneScreen() {
                     </View>
 
                     {/* button to consult */}
-                    <ButtonComponent
-                      label="Consultar"
-                      buttonProps={{
-                        bg: colors.primary.primary_600,
-                        borderRadius: 8,
-                        padding: 1,
-                      }}
-                      labelProps={styles.buttonCardLabel}
-                      onPress={() => handleConsultLottery(lottery.name)}
-                    />
+                    <View
+                      mt={cardInRow ? '0px' : '20px'}
+                      ml={cardInRow ? '0' : 'auto'}
+                      mr={cardInRow ? '0' : 'auto'}
+                    >
+                      <ButtonComponent
+                        label="Consultar"
+                        buttonProps={{
+                          bg: colors.primary.primary_600,
+                          borderRadius: 8,
+                          padding: 1,
+                          width: cardInRow ? '100%' : 120,
+                        }}
+                        labelProps={styles.buttonCardLabel}
+                        onPress={() => handleConsultLottery(lottery.name)}
+                      />
+                    </View>
                   </View>
                 );
               })}
@@ -166,6 +218,17 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     width: 260,
     height: 160,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  lotteryCardContainer: {
+    backgroundColor: colors.gray.gray_800,
+    padding: 20,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderStyle: 'solid',
     marginLeft: 'auto',
     marginRight: 'auto',
     flexDirection: 'column',
@@ -231,5 +294,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingTop: 1,
     fontFamily: 'RobotoBold',
+  },
+  cardsDirectionsContainer: {
+    flexDirection: 'row',
+    gap: 8,
+    alignItems: 'center',
   },
 });
