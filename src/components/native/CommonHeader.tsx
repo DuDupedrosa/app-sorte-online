@@ -47,7 +47,6 @@ export default function CommonHeader({ showButtonBackHome, lastPage }: Props) {
               onPress={() => router.push('/')}
             >
               <Image source={require('@/src/assets/images/logo.png')} />
-              <Text style={styles.logoName}>{appConfig.name}</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "sorte-online",
-    "slug": "sorte-online",
+    "name": "loto-online",
+    "slug": "loto-online",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./src/assets/images/clover-icon.png",
